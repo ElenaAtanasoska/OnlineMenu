@@ -1,87 +1,206 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="mk">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Coffee Bloom Menu</title>
+  <title>Мени за Пијалоци</title>
   <style>
     body {
       font-family: 'Poppins', sans-serif;
-      background-color: #fff8f0;
-      color: #3e2723;
-      text-align: center;
+      background-color: black;
       margin: 0;
       padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      color: #fff;
     }
-    header {
-      background-color: #d7ccc8;
-      padding: 20px;
-    }
-    h1 {
-      margin: 0;
-    }
-    section {
-      max-width: 500px;
-      margin: 30px auto;
-      background: #ffffff;
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-    }
-    h2 {
-      border-bottom: 2px solid #d7ccc8;
-      padding-bottom: 5px;
-    }
-    ul {
-      list-style: none;
-      padding: 0;
-    }
-    li {
+
+    /* --- HEADER --- */
+    .header {
+      width: 100vw; /* full width */
       display: flex;
       justify-content: space-between;
-      margin: 8px 0;
+      align-items: center;
+      background: white;
+      padding: 15px 25px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      box-sizing: border-box;
     }
-    .price {
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .back-btn, .home-btn {
+      font-size: 26px;
+      text-decoration: none;
+      color: black;
+      cursor: pointer;
+      transition: color 0.2s;
+    }
+
+    .back-btn:hover, .home-btn:hover {
+      color: gray;
+    }
+
+    .header-right {
+      font-size: 18px;
+      font-weight: 600;
+      color: black;
+    }
+
+    /* --- Main content --- */
+    .container {
+      width: 100%;
+      max-width: 600px;
+      margin-top: 20px;
+    }
+
+    /* --- Logo --- */
+    .logo {
+      display: block;
+      margin: 40px auto 20px auto;
+      width: 150px;
+      height: auto;
+      border-radius: 10px;
+    }
+
+    /* --- Card design --- */
+    .card {
+      background-color: #ffffff;
+      border-radius: 15px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+      margin: 20px;
+      cursor: pointer;
+      overflow: hidden;
+      transition: transform 0.2s;
+      text-align: center;
+    }
+
+    .card:hover {
+      transform: scale(1.03);
+    }
+
+    .card img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+    }
+
+    .card h2 {
+      margin: 15px 0;
+      font-size: 22px;
+      color: #3e2723;
+    }
+
+    /* --- Products --- */
+    .product-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 15px;
+      border-top: 1px solid #ddd;
+      font-size: 18px;
+      color: #3e2723;
+      background-color: #fff;
+      margin: 10px 20px;
+      border-radius: 8px;
+    }
+
+    .product-row .price {
+      font-weight: bold;
       color: #6d4c41;
-    }
-    footer {
-      margin: 40px 0;
-      font-size: 14px;
     }
   </style>
 </head>
 <body>
-  <header>
-    <h1>☕ Coffee Bloom Menu</h1>
+
+  <!-- HEADER -->
+  <header class="header">
+    <div class="header-left">
+      <a class="back-btn" onclick="goBack()">←</a>
+      <a href="index.html" class="home-btn">🏠</a>
+    </div>
+    <div class="header-right">
+      <span>MK</span>
+    </div>
   </header>
 
-  <section>
-    <h2>Coffee</h2>
-    <ul>
-      <li><span>Espresso</span><span class="price">80 MKD</span></li>
-      <li><span>Cappuccino</span><span class="price">100 MKD</span></li>
-      <li><span>Latte</span><span class="price">110 MKD</span></li>
-    </ul>
-  </section>
+  <!-- MAIN CONTENT -->
+  <div class="container" id="menu-container">
+    <img src="C:\\Users\\ELENA\\Desktop\\Picture1.png" alt="logo" class="logo">
 
-  <section>
-    <h2>Cold Drinks</h2>
-    <ul>
-      <li><span>Iced Latte</span><span class="price">120 MKD</span></li>
-      <li><span>Frappe</span><span class="price">110 MKD</span></li>
-    </ul>
-  </section>
+    <!-- Main Menu Card -->
+    <div class="card" onclick="openCategory('drinks')">
+      <img src="https://images.unsplash.com/photo-1509042239860-f550ce710b93?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=600" alt="Мени за Пијалоци">
+      <h2>Мени за Пијалоци</h2>
+    </div>
+  </div>
 
-  <section>
-    <h2>Desserts</h2>
-    <ul>
-      <li><span>Cheesecake</span><span class="price">150 MKD</span></li>
-      <li><span>Brownie</span><span class="price">130 MKD</span></li>
-    </ul>
-  </section>
+  <script>
+    const container = document.getElementById('menu-container');
+    let currentView = 'main';
 
-  <footer>
-    <p>© 2025 Coffee Bloom Café</p>
-  </footer>
+    const categories = {
+      drinks: [
+        { title: 'Вода', img: 'https://images.unsplash.com/photo-1581012778440-4e56e748f2c5', products: [
+          { name: 'Минерална Вода', price: '50 ден' },
+          { name: 'Газирана Вода', price: '60 ден' }
+        ] },
+        { title: 'Кафе', img: 'https://images.unsplash.com/photo-1509042239860-f550ce710b93', products: [
+          { name: 'Espresso', price: '80 ден' },
+          { name: 'Cappuccino', price: '100 ден' },
+          { name: 'Latte', price: '110 ден' }
+        ] },
+        { title: 'Пиво', img: 'https://images.unsplash.com/photo-1589927986089-35812388d1b4', products: [
+          { name: 'Лагер', price: '120 ден' },
+          { name: 'IPA', price: '130 ден' }
+        ] }
+      ]
+    };
+
+    function goBack() {
+      if (currentView === 'products') {
+        openCategory('drinks');
+      } else if (currentView === 'categories') {
+        location.reload();
+      } else {
+        location.reload();
+      }
+    }
+
+    function openCategory(category) {
+      container.innerHTML = '';
+      currentView = 'categories';
+
+      categories[category].forEach(item => {
+        const card = document.createElement('div');
+        card.classList.add('card');
+        card.innerHTML = `
+          <img src="${item.img}" alt="${item.title}">
+          <h2>${item.title}</h2>
+        `;
+        card.onclick = () => openProducts(item);
+        container.appendChild(card);
+      });
+    }
+
+    function openProducts(item) {
+      container.innerHTML = '';
+      currentView = 'products';
+
+      item.products.forEach(prod => {
+        const row = document.createElement('div');
+        row.classList.add('product-row');
+        row.innerHTML = `<span>${prod.name}</span><span class="price">${prod.price}</span>`;
+        container.appendChild(row);
+      });
+    }
+  </script>
 </body>
 </html>
