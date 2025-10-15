@@ -18,12 +18,12 @@
 
     /* --- HEADER --- */
     .header {
-      width: 100vw; /* full width */
+      width: 100vw;
       display: flex;
       justify-content: space-between;
       align-items: center;
       background: white;
-      padding: 15px 25px;
+      padding: 6px 20px;
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
       position: sticky;
       top: 0;
@@ -60,43 +60,51 @@
       width: 100%;
       max-width: 600px;
       margin-top: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px; /* space between cards */
     }
 
     /* --- Logo --- */
     .logo {
       display: block;
-      margin: 40px auto 20px auto;
-      width: 150px;
+      margin: auto auto 20px auto;
+      width: 300px;
       height: auto;
       border-radius: 10px;
     }
 
-    /* --- Card design --- */
-    .card {
-      background-color: #ffffff;
+    /* --- All cards style --- */
+    .card, .category-card {
+      background-color: #111; /* black background */
+      color: #fff;
       border-radius: 15px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
-      margin: 20px;
       cursor: pointer;
       overflow: hidden;
-      transition: transform 0.2s;
       text-align: center;
+      box-shadow: 0 8px 20px rgba(255, 255, 255, 0.15); /* subtle glow */
+      transition: transform 0.3s, box-shadow 0.3s;
+      width: 90%; /* slightly narrower for spacing on mobile */
+      margin-bottom: 30px;
     }
 
-    .card:hover {
-      transform: scale(1.03);
+    .card:hover, .category-card:hover {
+      transform: scale(1.05);
+      box-shadow: 0 12px 30px rgba(255, 255, 255, 0.25);
     }
 
-    .card img {
+    .card img, .category-card img {
       width: 100%;
       height: 200px;
       object-fit: cover;
+      filter: brightness(0.8);
     }
 
-    .card h2 {
+    .card h2, .category-card h2 {
       margin: 15px 0;
       font-size: 22px;
-      color: #3e2723;
+      color: #fff; /* white text */
     }
 
     /* --- Products --- */
@@ -104,17 +112,19 @@
       display: flex;
       justify-content: space-between;
       padding: 15px;
-      border-top: 1px solid #ddd;
+      border-top: 1px solid #333;
       font-size: 18px;
-      color: #3e2723;
-      background-color: #fff;
-      margin: 10px 20px;
+      color: #fff;
+      background-color: #111;
+      margin: 10px 0;
       border-radius: 8px;
+      box-shadow: 0 4px 15px rgba(255, 255, 255, 0.1);
+      width: 90%;
     }
 
     .product-row .price {
       font-weight: bold;
-      color: #6d4c41;
+      color: #fff;
     }
   </style>
 </head>
@@ -124,7 +134,11 @@
   <header class="header">
     <div class="header-left">
       <a class="back-btn" onclick="goBack()">←</a>
-      <a href="index.html" class="home-btn">🏠</a>
+      <a href="index.html" class="home-btn" title="Home">
+        <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+          <path d="M3 9.5L12 3l9 6.5V21a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1V9.5z"/>
+        </svg>
+      </a>
     </div>
     <div class="header-right">
       <span>MK</span>
@@ -133,12 +147,12 @@
 
   <!-- MAIN CONTENT -->
   <div class="container" id="menu-container">
-    <img src="assets/logo.png" alt="logo" class="logo">
+    <img src="images/logo.png" alt="logo" class="logo">
 
     <!-- Main Menu Card -->
-    <div class="card" onclick="openCategory('drinks')">
-      <img src="https://images.unsplash.com/photo-1509042239860-f550ce710b93?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=600" alt="Мени за Пијалоци">
-      <h2>Мени за Пијалоци</h2>
+    <div class="card category-card" onclick="openCategory('drinks')">
+      <img src="images/main-menu.jpg" alt="Пијалоци">
+      <h2>Пијалоци</h2>
     </div>
   </div>
 
@@ -148,16 +162,16 @@
 
     const categories = {
       drinks: [
-        { title: 'Вода', img: 'https://images.unsplash.com/photo-1581012778440-4e56e748f2c5', products: [
+        { title: 'Вода', img: 'images/voda.jpg', products: [
           { name: 'Минерална Вода', price: '50 ден' },
           { name: 'Газирана Вода', price: '60 ден' }
         ] },
-        { title: 'Кафе', img: 'https://images.unsplash.com/photo-1509042239860-f550ce710b93', products: [
-          { name: 'Espresso', price: '80 ден' },
-          { name: 'Cappuccino', price: '100 ден' },
-          { name: 'Latte', price: '110 ден' }
+        { title: 'Кафе', img: 'images/kafe.jpg', products: [
+          { name: 'Espresso', price: '80 ден', img: 'images/espreso.jpg' },
+          { name: 'Cappuccino', price: '100 ден', img: 'images/makijato.jpg' },
+          { name: 'Latte', price: '110 ден', img: 'images/latte.jpg' }
         ] },
-        { title: 'Пиво', img: 'https://images.unsplash.com/photo-1589927986089-35812388d1b4', products: [
+        { title: 'Пиво', img: 'images/pivo.jpg', products: [
           { name: 'Лагер', price: '120 ден' },
           { name: 'IPA', price: '130 ден' }
         ] }
@@ -180,7 +194,7 @@
 
       categories[category].forEach(item => {
         const card = document.createElement('div');
-        card.classList.add('card');
+        card.classList.add('card', 'category-card'); // add glow/black style
         card.innerHTML = `
           <img src="${item.img}" alt="${item.title}">
           <h2>${item.title}</h2>
@@ -191,15 +205,19 @@
     }
 
     function openProducts(item) {
-      container.innerHTML = '';
-      currentView = 'products';
+  container.innerHTML = '';
+  currentView = 'products';
 
-      item.products.forEach(prod => {
-        const row = document.createElement('div');
-        row.classList.add('product-row');
-        row.innerHTML = `<span>${prod.name}</span><span class="price">${prod.price}</span>`;
-        container.appendChild(row);
-      });
+  item.products.forEach(prod => {
+    const card = document.createElement('div');
+    card.classList.add('card', 'category-card'); // same style as category cards
+    card.innerHTML = `
+      <img src="${prod.img}" alt="${prod.name}">
+      <h2>${prod.name}</h2>
+      <p style="color: #fff; font-weight: bold; margin-bottom: 15px;">${prod.price}</p>
+    `;
+    container.appendChild(card);
+  });
     }
   </script>
 </body>
