@@ -76,32 +76,32 @@
     }
 
     /* --- CATEGORY CARDS --- */
-    .card, .category-card {
+    .category-card {
       background-color: #111;
       color: #fff;
       border-radius: 15px;
       cursor: pointer;
       overflow: hidden;
       text-align: center;
-      box-shadow: 0 8px 20px rgba(255, 255, 255, 0.15);
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.25);
       transition: transform 0.3s, box-shadow 0.3s;
-      width: 70%;
+      width: 90%;
       margin-bottom: 30px;
     }
 
-    .card:hover, .category-card:hover {
+    .category-card:hover {
       transform: scale(1.05);
       box-shadow: 0 12px 30px rgba(255, 255, 255, 0.25);
     }
 
-    .card img, .category-card img {
+    .category-card img {
       width: 100%;
       height: 200px;
       object-fit: cover;
       filter: brightness(0.9);
     }
 
-    .card h2, .category-card h2 {
+    .category-card h2 {
       margin: 15px 0;
       font-size: 22px;
       color: #fff;
@@ -114,7 +114,7 @@
       border-radius: 15px;
       overflow: hidden;
       text-align: center;
-      box-shadow: 0 6px 18px rgba(255, 255, 255, 0.1);
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.25);
       width: 80%;
       margin-bottom: 25px;
       transition: transform 0.3s, box-shadow 0.3s;
@@ -136,7 +136,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 15px 20px 35px;
+      padding: 15px 20px 35px; /* bottom padding for space below text */
       font-size: 18px;
     }
 
@@ -173,7 +173,7 @@
     <img src="images/logo.png" alt="logo" class="logo">
 
     <!-- Main Menu Card -->
-    <div class="card category-card" onclick="openCategory('drinks')">
+    <div class="category-card" onclick="openCategory('drinks')">
       <img src="images/main-menu.jpg" alt="Пијалоци">
       <h2>Пијалоци</h2>
     </div>
@@ -217,7 +217,7 @@
 
       categories[category].forEach(item => {
         const card = document.createElement('div');
-        card.classList.add('card', 'category-card');
+        card.classList.add('category-card');
         card.innerHTML = `
           <img src="${item.img}" alt="${item.title}">
           <h2>${item.title}</h2>
