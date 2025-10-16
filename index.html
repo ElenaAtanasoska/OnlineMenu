@@ -55,7 +55,7 @@
       color: black;
     }
 
-    /* --- Main content --- */
+    /* --- MAIN CONTENT --- */
     .container {
       width: 100%;
       max-width: 600px;
@@ -63,10 +63,10 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 20px; /* space between cards */
+      gap: 20px;
     }
 
-    /* --- Logo --- */
+    /* --- LOGO --- */
     .logo {
       display: block;
       margin: auto auto 20px auto;
@@ -75,17 +75,17 @@
       border-radius: 10px;
     }
 
-    /* --- All cards style --- */
+    /* --- CATEGORY CARDS --- */
     .card, .category-card {
-      background-color: #111; /* black background */
+      background-color: #111;
       color: #fff;
       border-radius: 15px;
       cursor: pointer;
       overflow: hidden;
       text-align: center;
-      box-shadow: 0 8px 20px rgba(255, 255, 255, 0.15); /* subtle glow */
+      box-shadow: 0 8px 20px rgba(255, 255, 255, 0.15);
       transition: transform 0.3s, box-shadow 0.3s;
-      width: 90%; /* slightly narrower for spacing on mobile */
+      width: 70%;
       margin-bottom: 30px;
     }
 
@@ -98,33 +98,56 @@
       width: 100%;
       height: 200px;
       object-fit: cover;
-      filter: brightness(0.8);
+      filter: brightness(0.9);
     }
 
     .card h2, .category-card h2 {
       margin: 15px 0;
       font-size: 22px;
-      color: #fff; /* white text */
+      color: #fff;
     }
 
-    /* --- Products --- */
-    .product-row {
+    /* --- PRODUCT CARD --- */
+    .product-card {
+      background-color: #111;
+      color: #fff;
+      border-radius: 15px;
+      overflow: hidden;
+      text-align: center;
+      box-shadow: 0 6px 18px rgba(255, 255, 255, 0.1);
+      width: 80%;
+      margin-bottom: 25px;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .product-card:hover {
+      transform: scale(1.03);
+      box-shadow: 0 10px 25px rgba(255, 255, 255, 0.2);
+    }
+
+    .product-card img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      filter: brightness(0.9);
+    }
+
+    .product-info {
       display: flex;
       justify-content: space-between;
-      padding: 15px;
-      border-top: 1px solid #333;
+      align-items: center;
+      padding: 15px 20px 35px;
       font-size: 18px;
-      color: #fff;
-      background-color: #111;
-      margin: 10px 0;
-      border-radius: 8px;
-      box-shadow: 0 4px 15px rgba(255, 255, 255, 0.1);
-      width: 90%;
     }
 
-    .product-row .price {
-      font-weight: bold;
-      color: #fff;
+    .product-info .name {
+      font-weight: 500;
+      text-align: left;
+    }
+
+    .product-info .price {
+      font-weight: 600;
+      text-align: right;
     }
   </style>
 </head>
@@ -163,8 +186,8 @@
     const categories = {
       drinks: [
         { title: 'Вода', img: 'images/voda.jpg', products: [
-          { name: 'Минерална Вода', price: '50 ден' },
-          { name: 'Газирана Вода', price: '60 ден' }
+          { name: 'Минерална Вода', price: '50 ден', img: 'images/voda1.jpg' },
+          { name: 'Газирана Вода', price: '60 ден', img: 'images/gazirana.jpg' }
         ] },
         { title: 'Кафе', img: 'images/kafe.jpg', products: [
           { name: 'Espresso', price: '80 ден', img: 'images/espreso.jpg' },
@@ -172,8 +195,8 @@
           { name: 'Latte', price: '110 ден', img: 'images/latte.jpg' }
         ] },
         { title: 'Пиво', img: 'images/pivo.jpg', products: [
-          { name: 'Лагер', price: '120 ден' },
-          { name: 'IPA', price: '130 ден' }
+          { name: 'Лагер', price: '120 ден', img: 'images/lager.jpg' },
+          { name: 'IPA', price: '130 ден', img: 'images/ipa.jpg' }
         ] }
       ]
     };
@@ -194,7 +217,7 @@
 
       categories[category].forEach(item => {
         const card = document.createElement('div');
-        card.classList.add('card', 'category-card'); // add glow/black style
+        card.classList.add('card', 'category-card');
         card.innerHTML = `
           <img src="${item.img}" alt="${item.title}">
           <h2>${item.title}</h2>
@@ -205,19 +228,22 @@
     }
 
     function openProducts(item) {
-  container.innerHTML = '';
-  currentView = 'products';
+      container.innerHTML = '';
+      currentView = 'products';
 
-  item.products.forEach(prod => {
-    const card = document.createElement('div');
-    card.classList.add('card', 'category-card'); // same style as category cards
-    card.innerHTML = `
-      <img src="${prod.img}" alt="${prod.name}">
-      <h2>${prod.name}</h2>
-      <p style="color: #fff; font-weight: bold; margin-bottom: 15px;">${prod.price}</p>
-    `;
-    container.appendChild(card);
-  });
+      // Create product cards with image + name + price
+      item.products.forEach(prod => {
+        const card = document.createElement('div');
+        card.classList.add('product-card');
+        card.innerHTML = `
+          <img src="${prod.img}" alt="${prod.name}">
+          <div class="product-info">
+            <span class="name">${prod.name}</span>
+            <span class="price">${prod.price}</span>
+          </div>
+        `;
+        container.appendChild(card);
+      });
     }
   </script>
 </body>
