@@ -16,7 +16,6 @@
       color: #fff;
     }
 
-    /* --- HEADER --- */
     .header {
       width: 100vw;
       display: flex;
@@ -37,7 +36,8 @@
       gap: 20px;
     }
 
-    .back-btn, .home-btn {
+    .back-btn,
+    .home-btn {
       font-size: 26px;
       text-decoration: none;
       color: black;
@@ -45,7 +45,8 @@
       transition: color 0.2s;
     }
 
-    .back-btn:hover, .home-btn:hover {
+    .back-btn:hover,
+    .home-btn:hover {
       color: gray;
     }
 
@@ -53,9 +54,9 @@
       font-size: 18px;
       font-weight: 600;
       color: black;
+      cursor: pointer;
     }
 
-    /* --- MAIN CONTENT --- */
     .container {
       width: 100%;
       max-width: 600px;
@@ -66,7 +67,6 @@
       gap: 20px;
     }
 
-    /* --- LOGO --- */
     .logo {
       display: block;
       margin: auto auto 20px auto;
@@ -75,26 +75,36 @@
       border-radius: 10px;
     }
 
-    /* --- CATEGORY CARDS --- */
-    .category-card {
+    .category-card,
+    .product-card {
       background-color: #111;
       color: #fff;
       border-radius: 15px;
       cursor: pointer;
       overflow: hidden;
       text-align: center;
-      box-shadow: 0 0 20px rgba(255, 255, 255, 0.25);
+      box-shadow: 0 0 40px rgba(255, 255, 255, 0.6);
       transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .category-card:hover,
+    .product-card:hover {
+      transform: scale(1.03);
+      box-shadow: 0 10px 25px rgba(255, 255, 255, 0.2);
+    }
+
+    .category-card {
       width: 90%;
       margin-bottom: 30px;
     }
 
-    .category-card:hover {
-      transform: scale(1.05);
-      box-shadow: 0 12px 30px rgba(255, 255, 255, 0.25);
+    .product-card {
+      width: 80%;
+      margin-bottom: 25px;
     }
 
-    .category-card img {
+    .category-card img,
+    .product-card img {
       width: 100%;
       height: 200px;
       object-fit: cover;
@@ -107,36 +117,11 @@
       color: #fff;
     }
 
-    /* --- PRODUCT CARD --- */
-    .product-card {
-      background-color: #111;
-      color: #fff;
-      border-radius: 15px;
-      overflow: hidden;
-      text-align: center;
-      box-shadow: 0 0 20px rgba(255, 255, 255, 0.25);
-      width: 80%;
-      margin-bottom: 25px;
-      transition: transform 0.3s, box-shadow 0.3s;
-    }
-
-    .product-card:hover {
-      transform: scale(1.03);
-      box-shadow: 0 10px 25px rgba(255, 255, 255, 0.2);
-    }
-
-    .product-card img {
-      width: 100%;
-      height: 200px;
-      object-fit: cover;
-      filter: brightness(0.9);
-    }
-
     .product-info {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 15px 20px 35px; /* bottom padding for space below text */
+      padding: 15px 20px 35px;
       font-size: 18px;
     }
 
@@ -153,98 +138,294 @@
 </head>
 <body>
 
-  <!-- HEADER -->
-  <header class="header">
-    <div class="header-left">
-      <a class="back-btn" onclick="goBack()">←</a>
-      <a href="index.html" class="home-btn" title="Home">
-        <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
-          <path d="M3 9.5L12 3l9 6.5V21a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1V9.5z"/>
-        </svg>
-      </a>
-    </div>
-    <div class="header-right">
-      <span>MK</span>
-    </div>
-  </header>
-
-  <!-- MAIN CONTENT -->
-  <div class="container" id="menu-container">
-    <img src="images/logo.png" alt="logo" class="logo">
-
-    <!-- Main Menu Card -->
-    <div class="category-card" onclick="openCategory('drinks')">
-      <img src="images/main-menu.jpg" alt="Пијалоци">
-      <h2>Пијалоци</h2>
-    </div>
+<header class="header">
+  <div class="header-left">
+    <a class="back-btn" onclick="goBack()">←</a>
+    <a class="home-btn" title="Home" onclick="showMainMenu()">
+      <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+        <path d="M3 9.5L12 3l9 6.5V21a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1V9.5z"/>
+      </svg>
+    </a>
   </div>
+  <div class="header-right" id="lang-toggle" onclick="toggleLanguage()">MK</div>
+</header>
 
-  <script>
-    const container = document.getElementById('menu-container');
-    let currentView = 'main';
+<div class="container" id="menu-container">
+  <img src="images/logo.png" alt="logo" class="logo">
+  <div class="category-card" id="main-menu-card">
+    <img src="images/main-menu.jpg" alt="Пијалоци">
+    <h2 data-key="drinks">Пијалоци</h2>
+  </div>
+</div>
 
-    const categories = {
-      drinks: [
-        { title: 'Вода', img: 'images/voda.jpg', products: [
-          { name: 'Минерална Вода', price: '50 ден', img: 'images/voda1.jpg' },
-          { name: 'Газирана Вода', price: '60 ден', img: 'images/gazirana.jpg' }
-        ] },
-        { title: 'Кафе', img: 'images/kafe.jpg', products: [
-          { name: 'Espresso', price: '80 ден', img: 'images/espreso.jpg' },
-          { name: 'Cappuccino', price: '100 ден', img: 'images/makijato.jpg' },
-          { name: 'Latte', price: '110 ден', img: 'images/latte.jpg' }
-        ] },
-        { title: 'Пиво', img: 'images/pivo.jpg', products: [
-          { name: 'Лагер', price: '120 ден', img: 'images/lager.jpg' },
-          { name: 'IPA', price: '130 ден', img: 'images/ipa.jpg' }
-        ] }
+<script>
+const container = document.getElementById('menu-container');
+const mainMenuCard = document.getElementById('main-menu-card');
+let currentView = 'main';
+let currentLang = 'mk';
+
+const translations = {
+  mk: {
+    drinks:'Пијалоци',
+    water:'Вода',
+    coffee:'Топли пијалоци',
+    beer:'Пиво',
+    nonAlc:'Безалкохолни пијалоци',
+    alc:'Алкохол',
+    espresso:'Еспресо',
+    cappuccino:'Капучино',
+    latte:'Лате',
+    skopsko:'Скопско 0.33л',
+    currency:'ден',
+    rosa:'Роса',
+    rozaGazirana:'Роса газирана',
+    makijato:'Макијато',
+    vkuslatte:'Лате со вкус',
+    coldDrinks:'Ладни пијалоци',
+    doubleespresso:"Дупло Еспресо",
+    topolnes:'Нескафе',
+    caj:'Чај',
+    tp:'Топло Чоколадо',
+    tplazma:'Топло Чоколадо со плазма',
+    ladnoespresso:'Ладно Еспресо',
+    ladnomakijato:'Ладно Макијато',
+    nes:'Нескафе',
+    ladnolatte:'Ладно Лате',
+    fredoespreso:'Фредо Еспресо',
+    cocacola:'Кока Кола',
+    zero:'Кока Кола Зеро',
+    fanta:'Фанта',
+    sprite:'Спрајт',
+    kokta:'Кокта',
+    sveps:'Швепс',
+    jana:'Леден чај Јана',
+    joy:'Џус',
+    cedevita:'Цедевита',
+    sodam:'Сода Мохито',
+    sodal:'Сода Лимон',
+    sodap:'Сода Портокал',
+    monin:'Monin Лимонада',
+    smut:'Скопско Смут',
+    h:'Heineken',
+    sax:'Gin Sax',
+    bombay:'Bombay Sapphire Dry Gin',
+    saxp:'Sax Pink Gin',
+    beef:'Beefeater Gin',
+    smirnof:"Smirnoff Vodka",
+    aboslut:'Absolut Vodka',
+    pel:'Пелинковац',
+    jeger:'Јегермајстер',
+    jameson:'Jameson Irish Whiskey',
+    jamesonblack:'Jameson Black Barrel',
+    rum:'Rum Badel'
+  },
+  en: {
+    drinks:'Drinks',
+    water:'Water',
+    coffee:'Hot Drinks',
+    beer:'Beer',
+    nonAlc:'Non-Alcoholic',
+    alc:'Alcohol',
+    espresso:'Espresso',
+    cappuccino:'Cappuccino',
+    latte:'Latte',
+    skopsko:'Skopsko 0.33l',
+    currency:'den',
+    rosa:'Rosa',
+    rozaGazirana:'Rosa sparkling',
+    makijato: 'Macchiato',
+    vkuslatte:"Flavored Latte",
+    coldDrinks:"Cold Drinks",
+    doubleespresso:"Double Espresso",
+    topolnes:"Nescafe",
+    caj:"Tea",
+    tp:'Hot Chocolate',
+    tplazma:'Hot Chocolate With Plazma',
+    ladnoespresso:'Cold Espresso',
+    ladnomakijato:'Cold Macchiato',
+    nes:'Nescafe',
+    ladnolatte:'Cold Latte',
+    fredoespreso:'Freddo Espresso',
+    cocacola:'Coca Cola',
+    zero:'Coca Cola Zero',
+    fanta:'Fanta',
+    sprite:'Sprite',
+    kokta:'Cockta',
+    sveps:'Schweppes Bitter Lemon',
+    jana:'Jana Ice Tea',
+    joy:'Next Joy',
+    cedevita:'Cedevita',
+    sodam:'Soda Mojito',
+    sodal:'Soda Lemon',
+    sodap:'Soda Orange',
+    monin:'Monin Lemonade',
+    smut:'Skopsko Smooth',
+    h:'Heineken',
+    sax:'Gin Sax',
+    bombay:'Bombay Sapphire Dry Gin',
+    saxp:'Sax Pink Gin',
+    beef:'Beefeater Gin',
+    smirnof:'Smirnoff Vodka',
+    aboslut:'Absolut Vodka',
+    pel:'Pelinkovac',
+    jeger:'Jagermeister',
+    jameson:'Jameson Irish Whiskey',
+    jamesonblack:'Jameson Black Barrel',
+    rum:'Rum Badel'
+    
+
+    
+  }
+};
+
+const categories = {
+  drinks: [
+    {
+      titleKey:'water',
+      img:'images/voda.jpg',
+      products:[
+        { nameKey:'rosa', price:60, img:'images/rosa.jpg' },
+        { nameKey:'rozaGazirana', price:60, img:'images/rosaG.jpg' }
       ]
-    };
-
-    function goBack() {
-      if (currentView === 'products') {
-        openCategory('drinks');
-      } else if (currentView === 'categories') {
-        location.reload();
-      } else {
-        location.reload();
-      }
+    },
+    {
+      titleKey:'coffee',
+      img:'images/kafe.jpg',
+      products:[
+        { nameKey:'espresso', price:70, img:'images/espreso.jpg' },
+        { nameKey:'doubleespresso', price:130, img:'images/duplo.jpg' },
+        { nameKey:'makijato', price:80, img:'images/makijato.jpg' },
+        { nameKey:'cappuccino', price:80, img:'images/kapucino.jpg' },
+        { nameKey:'latte', price:90, img:'images/toplolate.jpg' },
+        { nameKey:'vkuslatte', price:110, img:'images/toplolatevkus.jpg' },
+        { nameKey:'topolnes', price:90, img:'images/topolnes.png' },
+        { nameKey:'caj', price:60, img:'images/caj.jpg' },
+        { nameKey:'tp', price:90, img:'images/tp.jpg' },
+        { nameKey:'tplazma', price:110, img:'images/tplazma.png' },
+      ]
+    },
+    {
+      titleKey:'coldDrinks',
+      img:'images/ladni.jpg',
+      products:[
+        { nameKey:'ladnoespresso', price:70, img:'images/ladnoespreso.jpg' },
+        { nameKey:'fredoespreso', price:90, img:'images/fredoespreso.jpg' },
+        { nameKey:'ladnomakijato', price:80, img:'images/ladnomakijato.jpg' },
+        { nameKey:'nes', price:90, img:'images/nes.jpg' },
+        { nameKey:'ladnolatte', price:90, img:'images/late.jpg' },
+        { nameKey:'vkuslatte', price:110, img:'images/latevkus.jpg' }
+      ]
+    },
+    {
+      titleKey:'nonAlc',
+      img:'images/soft.jpg',
+      products:[
+      { nameKey:'cocacola', price:80, img:'images/cocacola.jpg' },
+      { nameKey:'zero', price:80, img:'images/zero.jpg' },
+      { nameKey:'fanta', price:80, img:'images/fanta.jpg' },
+      { nameKey:'sprite', price:80, img:'images/sprite.jpg' },
+      { nameKey:'kokta', price:80, img:'images/kokta.jpg' },
+      { nameKey:'sveps', price:80, img:'images/sveps.jpg' },
+      { nameKey:'jana', price:100, img:'images/jana.png' },
+      { nameKey:'joy', price:90, img:'images/joy.jpg' },
+      { nameKey:'cedevita', price:80, img:'images/cedevita.jpg' },
+      { nameKey:'sodam', price:90, img:'images/sodam.jpg' },
+      { nameKey:'sodal', price:90, img:'images/sodal.jpg' },
+      { nameKey:'sodap', price:90, img:'images/sodap.png' },
+      { nameKey:'monin', price:100, img:'images/monin.jpg' },
+      ]
+    },
+    {
+      titleKey:'beer',
+      img:'images/pivo.jpg',
+      products:[
+        { nameKey:'skopsko', price:90, img:'images/skopsko.jpg' },
+        { nameKey:'smut', price:90, img:'images/smut.jpg' },
+        { nameKey:'h', price:110, img:'images/h.png' }
+        
+      ]
+    },
+    {
+      titleKey:'alc',
+      img:'images/alcohol.png',
+      products:[
+        { nameKey:'sax', price:100, img:'images/sax.jpg' },
+        { nameKey:'saxp', price:100, img:'images/saxp.jpg' },
+        { nameKey:'bombay', price:120, img:'images/bombay.jpg' },
+        { nameKey:'beef', price:120, img:'images/beef.png' },
+        { nameKey:'smirnof', price:110, img:'images/smirnof.jpg' },
+        { nameKey:'aboslut', price:110, img:'images/absolut.jpg' },
+        { nameKey:'pel', price:100, img:'images/pel.jpg' },
+        { nameKey:'rum', price:100, img:'images/rum.jpg' },
+        { nameKey:'jeger', price:130, img:'images/jeger.jpg' },
+        { nameKey:'jameson', price:160, img:'images/jameson.jpg' },
+        { nameKey:'jamesonblack', price:200, img:'images/jamesonblack.jpg' },
+      ]
     }
+  ]
+};
 
-    function openCategory(category) {
-      container.innerHTML = '';
-      currentView = 'categories';
+mainMenuCard.onclick = () => openCategory('drinks');
 
-      categories[category].forEach(item => {
-        const card = document.createElement('div');
-        card.classList.add('category-card');
-        card.innerHTML = `
-          <img src="${item.img}" alt="${item.title}">
-          <h2>${item.title}</h2>
-        `;
-        card.onclick = () => openProducts(item);
-        container.appendChild(card);
-      });
-    }
+function toggleLanguage(){
+  currentLang = currentLang==='mk'?'en':'mk';
+  document.getElementById('lang-toggle').textContent = currentLang.toUpperCase();
+  showMainMenu();
+}
 
-    function openProducts(item) {
-      container.innerHTML = '';
-      currentView = 'products';
+function showMainMenu(){
+  container.innerHTML = `
+    <img src="images/logo.png" alt="logo" class="logo">
+    <div class="category-card" id="main-menu-card">
+      <img src="images/main-menu.jpg" alt="${translations[currentLang].drinks}">
+      <h2 data-key="drinks">${translations[currentLang].drinks}</h2>
+    </div>
+  `;
+  currentView='main';
+  document.getElementById('main-menu-card').onclick = () => openCategory('drinks');
+  window.scrollTo({ top: 0, behavior: 'instant' }); // reset scroll
+}
 
-      // Create product cards with image + name + price
-      item.products.forEach(prod => {
-        const card = document.createElement('div');
-        card.classList.add('product-card');
-        card.innerHTML = `
-          <img src="${prod.img}" alt="${prod.name}">
-          <div class="product-info">
-            <span class="name">${prod.name}</span>
-            <span class="price">${prod.price}</span>
-          </div>
-        `;
-        container.appendChild(card);
-      });
-    }
-  </script>
+function goBack(){
+  if(currentView==='products') openCategory('drinks');
+  else if(currentView==='categories') showMainMenu();
+  else showMainMenu();
+}
+
+function openCategory(category){
+  container.innerHTML='';
+  currentView='categories';
+  categories[category].forEach(item=>{
+    const card=document.createElement('div');
+    card.classList.add('category-card');
+    card.innerHTML=`
+      <img src="${item.img}" alt="${translations[currentLang][item.titleKey]}">
+      <h2>${translations[currentLang][item.titleKey]}</h2>
+    `;
+    card.onclick=()=>openProducts(item);
+    container.appendChild(card);
+  });
+  window.scrollTo({ top: 0, behavior: 'instant' }); // reset scroll
+}
+
+function openProducts(item){
+  container.innerHTML='';
+  currentView='products';
+  item.products.forEach(prod=>{
+    const card=document.createElement('div');
+    card.classList.add('product-card');
+    card.innerHTML=`
+      <img src="${prod.img}" alt="${translations[currentLang][prod.nameKey]}">
+      <div class="product-info">
+        <span class="name">${translations[currentLang][prod.nameKey]}</span>
+        <span class="price">${prod.price} ${translations[currentLang].currency}</span>
+      </div>
+    `;
+    container.appendChild(card);
+  });
+  window.scrollTo({ top: 0, behavior: 'instant' }); // reset scroll
+}
+</script>
+
 </body>
 </html>
