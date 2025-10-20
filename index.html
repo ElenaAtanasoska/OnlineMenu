@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="mk">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,6 +15,36 @@
       flex-direction: column;
       align-items: center;
       color: #fff;
+    }
+
+    .category-bar {
+      width: 100%;
+      display: flex;
+      overflow-x: auto;
+      gap: 10px;
+      padding: 10px 15px;
+      background-color: white;
+      position: sticky;
+      top: 60px;
+      z-index: 999;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .category-button {
+      flex-shrink: 0;
+      border: 1px solid #d4a017;
+      border-radius: 20px;
+      padding: 8px 16px;
+      background: white;
+      color: #b07a0d;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .category-button:hover {
+      background: #d4a017;
+      color: white;
     }
 
     .header {
@@ -136,296 +167,338 @@
     }
   </style>
 </head>
+
 <body>
 
-<header class="header">
-  <div class="header-left">
-    <a class="back-btn" onclick="goBack()">←</a>
-    <a class="home-btn" title="Home" onclick="showMainMenu()">
-      <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
-        <path d="M3 9.5L12 3l9 6.5V21a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1V9.5z"/>
-      </svg>
-    </a>
+  <header class="header">
+    <div class="header-left">
+      <a class="back-btn" onclick="goBack()">←</a>
+      <a class="home-btn" title="Home" onclick="showMainMenu()">
+        <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="none" stroke="black" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+          <path d="M3 9.5L12 3l9 6.5V21a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1V9.5z" />
+        </svg>
+      </a>
+    </div>
+    <div class="header-right" id="lang-toggle" onclick="toggleLanguage()">MK</div>
+  </header>
+
+  <div class="container" id="menu-container">
+    <img src="images/logo.png" alt="logo" class="logo">
+    <div class="category-card" id="main-menu-card">
+      <img src="images/main-menu.jpg" alt="Пијалоци">
+      <h2 data-key="drinks">Пијалоци</h2>
+    </div>
   </div>
-  <div class="header-right" id="lang-toggle" onclick="toggleLanguage()">MK</div>
-</header>
 
-<div class="container" id="menu-container">
-  <img src="images/logo.png" alt="logo" class="logo">
-  <div class="category-card" id="main-menu-card">
-    <img src="images/main-menu.jpg" alt="Пијалоци">
-    <h2 data-key="drinks">Пијалоци</h2>
-  </div>
-</div>
+  <script>
+    const container = document.getElementById('menu-container');
+    const mainMenuCard = document.getElementById('main-menu-card');
+    let currentView = 'main';
+    let currentLang = 'mk';
 
-<script>
-const container = document.getElementById('menu-container');
-const mainMenuCard = document.getElementById('main-menu-card');
-let currentView = 'main';
-let currentLang = 'mk';
+    const translations = {
+      mk: {
+        drinks: 'Пијалоци',
+        water: 'Вода',
+        coffee: 'Топли пијалоци',
+        beer: 'Пиво',
+        nonAlc: 'Безалкохолни пијалоци',
+        alc: 'Алкохол',
+        espresso: 'Еспресо',
+        cappuccino: 'Капучино',
+        latte: 'Лате',
+        skopsko: 'Скопско 0.33л',
+        currency: 'ден',
+        rosa: 'Роса',
+        rozaGazirana: 'Роса газирана',
+        makijato: 'Макијато',
+        vkuslatte: 'Лате со вкус',
+        coldDrinks: 'Ладни пијалоци',
+        doubleespresso: "Дупло Еспресо",
+        topolnes: 'Нескафе',
+        caj: 'Чај',
+        tp: 'Топло Чоколадо',
+        tplazma: 'Топло Чоколадо со плазма',
+        ladnoespresso: 'Ладно Еспресо',
+        ladnomakijato: 'Ладно Макијато',
+        nes: 'Нескафе',
+        ladnolatte: 'Ладно Лате',
+        fredoespreso: 'Фредо Еспресо',
+        cocacola: 'Кока Кола',
+        zero: 'Кока Кола Зеро',
+        fanta: 'Фанта',
+        sprite: 'Спрајт',
+        kokta: 'Кокта',
+        sveps: 'Швепс',
+        jana: 'Леден чај Јана',
+        joy: 'Џус',
+        cedevita: 'Цедевита',
+        sodam: 'Сода Мохито',
+        sodal: 'Сода Лимон',
+        sodap: 'Сода Портокал',
+        monin: 'Monin Лимонада',
+        smut: 'Скопско Смут 0.33л',
+        h: 'Heineken 0.25л',
+        sax: 'Gin Sax 0.04л',
+        bombay: 'Bombay Sapphire Dry Gin 0.04л',
+        saxp: 'Sax Pink Gin 0.04л',
+        beef: 'Beefeater Gin 0.04л',
+        smirnof: "Smirnoff Vodka 0.04л",
+        aboslut: 'Absolut Vodka 0.04л',
+        pel: 'Пелинковац 0.04л',
+        jeger: 'Јегермајстер 0.04л',
+        jameson: 'Jameson Irish Whiskey 0.04л',
+        jamesonblack: 'Jameson Black Barrel 0.04л',
+        rum: 'Rum Badel 0.04л',
+        chivas: 'Chivas Regal 0.04л',
+        gjack: 'Gentleman Jack Whiskey 0.04л',
+        jw: 'Johnnie Walker Black Label 0.04л',
+        tekila: 'Tres Sombreros Текила 0.04л',
+        rakija: 'Тиквеш Лозова Ракија Жолта 0.05л',
+        aperol: 'Aperol Spritz'
+      },
+      en: {
+        drinks: 'Drinks',
+        water: 'Water',
+        coffee: 'Hot Drinks',
+        beer: 'Beer',
+        nonAlc: 'Non-Alcoholic',
+        alc: 'Alcohol',
+        espresso: 'Espresso',
+        cappuccino: 'Cappuccino',
+        latte: 'Latte',
+        skopsko: 'Skopsko 0.33l',
+        currency: 'den',
+        rosa: 'Rosa',
+        rozaGazirana: 'Rosa sparkling',
+        makijato: 'Macchiato',
+        vkuslatte: "Flavored Latte",
+        coldDrinks: "Cold Drinks",
+        doubleespresso: "Double Espresso",
+        topolnes: "Nescafe",
+        caj: "Tea",
+        tp: 'Hot Chocolate',
+        tplazma: 'Hot Chocolate With Plazma',
+        ladnoespresso: 'Cold Espresso',
+        ladnomakijato: 'Cold Macchiato',
+        nes: 'Nescafe',
+        ladnolatte: 'Cold Latte',
+        fredoespreso: 'Freddo Espresso',
+        cocacola: 'Coca Cola',
+        zero: 'Coca Cola Zero',
+        fanta: 'Fanta',
+        sprite: 'Sprite',
+        kokta: 'Cockta',
+        sveps: 'Schweppes Bitter Lemon',
+        jana: 'Jana Ice Tea',
+        joy: 'Next Joy',
+        cedevita: 'Cedevita',
+        sodam: 'Soda Mojito',
+        sodal: 'Soda Lemon',
+        sodap: 'Soda Orange',
+        monin: 'Monin Lemonade',
+        smut: 'Skopsko Smooth 0.33l',
+        h: 'Heineken 0.25l',
+        sax: 'Gin Sax 0.04l',
+        bombay: 'Bombay Sapphire Dry Gin 0.04l',
+        saxp: 'Sax Pink Gin 0.04l',
+        beef: 'Beefeater Gin 0.04l',
+        smirnof: 'Smirnoff Vodka 0.04l',
+        aboslut: 'Absolut Vodka 0.04l',
+        pel: 'Pelinkovac 0.04l',
+        jeger: 'Jagermeister 0.04l',
+        jameson: 'Jameson Irish Whiskey 0.04l',
+        jamesonblack: 'Jameson Black Barrel 0.04l',
+        rum: 'Rum Badel 0.04l',
+        chivas: 'Chivas Regal 0.04l',
+        gjack: 'Gentleman Jack Whiskey 0.04l',
+        jw: 'Johnnie Walker Black Label 0.04l',
+        tekila: 'Tres Sombreros Tequila 0.04l',
+        rakija: 'Tikves Lozova Rakija Zolta 0.05l',
+        aperol: 'Aperol Spritz'
 
-const translations = {
-  mk: {
-    drinks:'Пијалоци',
-    water:'Вода',
-    coffee:'Топли пијалоци',
-    beer:'Пиво',
-    nonAlc:'Безалкохолни пијалоци',
-    alc:'Алкохол',
-    espresso:'Еспресо',
-    cappuccino:'Капучино',
-    latte:'Лате',
-    skopsko:'Скопско 0.33л',
-    currency:'ден',
-    rosa:'Роса',
-    rozaGazirana:'Роса газирана',
-    makijato:'Макијато',
-    vkuslatte:'Лате со вкус',
-    coldDrinks:'Ладни пијалоци',
-    doubleespresso:"Дупло Еспресо",
-    topolnes:'Нескафе',
-    caj:'Чај',
-    tp:'Топло Чоколадо',
-    tplazma:'Топло Чоколадо со плазма',
-    ladnoespresso:'Ладно Еспресо',
-    ladnomakijato:'Ладно Макијато',
-    nes:'Нескафе',
-    ladnolatte:'Ладно Лате',
-    fredoespreso:'Фредо Еспресо',
-    cocacola:'Кока Кола',
-    zero:'Кока Кола Зеро',
-    fanta:'Фанта',
-    sprite:'Спрајт',
-    kokta:'Кокта',
-    sveps:'Швепс',
-    jana:'Леден чај Јана',
-    joy:'Џус',
-    cedevita:'Цедевита',
-    sodam:'Сода Мохито',
-    sodal:'Сода Лимон',
-    sodap:'Сода Портокал',
-    monin:'Monin Лимонада',
-    smut:'Скопско Смут',
-    h:'Heineken',
-    sax:'Gin Sax',
-    bombay:'Bombay Sapphire Dry Gin',
-    saxp:'Sax Pink Gin',
-    beef:'Beefeater Gin',
-    smirnof:"Smirnoff Vodka",
-    aboslut:'Absolut Vodka',
-    pel:'Пелинковац',
-    jeger:'Јегермајстер',
-    jameson:'Jameson Irish Whiskey',
-    jamesonblack:'Jameson Black Barrel',
-    rum:'Rum Badel'
-  },
-  en: {
-    drinks:'Drinks',
-    water:'Water',
-    coffee:'Hot Drinks',
-    beer:'Beer',
-    nonAlc:'Non-Alcoholic',
-    alc:'Alcohol',
-    espresso:'Espresso',
-    cappuccino:'Cappuccino',
-    latte:'Latte',
-    skopsko:'Skopsko 0.33l',
-    currency:'den',
-    rosa:'Rosa',
-    rozaGazirana:'Rosa sparkling',
-    makijato: 'Macchiato',
-    vkuslatte:"Flavored Latte",
-    coldDrinks:"Cold Drinks",
-    doubleespresso:"Double Espresso",
-    topolnes:"Nescafe",
-    caj:"Tea",
-    tp:'Hot Chocolate',
-    tplazma:'Hot Chocolate With Plazma',
-    ladnoespresso:'Cold Espresso',
-    ladnomakijato:'Cold Macchiato',
-    nes:'Nescafe',
-    ladnolatte:'Cold Latte',
-    fredoespreso:'Freddo Espresso',
-    cocacola:'Coca Cola',
-    zero:'Coca Cola Zero',
-    fanta:'Fanta',
-    sprite:'Sprite',
-    kokta:'Cockta',
-    sveps:'Schweppes Bitter Lemon',
-    jana:'Jana Ice Tea',
-    joy:'Next Joy',
-    cedevita:'Cedevita',
-    sodam:'Soda Mojito',
-    sodal:'Soda Lemon',
-    sodap:'Soda Orange',
-    monin:'Monin Lemonade',
-    smut:'Skopsko Smooth',
-    h:'Heineken',
-    sax:'Gin Sax',
-    bombay:'Bombay Sapphire Dry Gin',
-    saxp:'Sax Pink Gin',
-    beef:'Beefeater Gin',
-    smirnof:'Smirnoff Vodka',
-    aboslut:'Absolut Vodka',
-    pel:'Pelinkovac',
-    jeger:'Jagermeister',
-    jameson:'Jameson Irish Whiskey',
-    jamesonblack:'Jameson Black Barrel',
-    rum:'Rum Badel'
-    
 
-    
-  }
-};
 
-const categories = {
-  drinks: [
-    {
-      titleKey:'water',
-      img:'images/voda.jpg',
-      products:[
-        { nameKey:'rosa', price:60, img:'images/rosa.jpg' },
-        { nameKey:'rozaGazirana', price:60, img:'images/rosaG.jpg' }
+      }
+    };
+
+    const categories = {
+      drinks: [
+        {
+          titleKey: 'water',
+          img: 'images/voda.jpg',
+          products: [
+            { nameKey: 'rosa', price: 60, img: 'images/rosa.jpg' },
+            { nameKey: 'rozaGazirana', price: 60, img: 'images/rosaG.jpg' }
+          ]
+        },
+        {
+          titleKey: 'coffee',
+          img: 'images/kafe.jpg',
+          products: [
+            { nameKey: 'espresso', price: 70, img: 'images/espreso.jpg' },
+            { nameKey: 'doubleespresso', price: 130, img: 'images/duplo.jpg' },
+            { nameKey: 'makijato', price: 80, img: 'images/makijato.jpg' },
+            { nameKey: 'cappuccino', price: 80, img: 'images/kapucino.jpg' },
+            { nameKey: 'latte', price: 90, img: 'images/toplolate.jpg' },
+            { nameKey: 'vkuslatte', price: 110, img: 'images/toplolatevkus.jpg' },
+            { nameKey: 'topolnes', price: 90, img: 'images/topolnes.png' },
+            { nameKey: 'caj', price: 60, img: 'images/caj.jpg' },
+            { nameKey: 'tp', price: 90, img: 'images/tp.jpg' },
+            { nameKey: 'tplazma', price: 110, img: 'images/tplazma.png' },
+          ]
+        },
+        {
+          titleKey: 'coldDrinks',
+          img: 'images/ladni.jpg',
+          products: [
+            { nameKey: 'ladnoespresso', price: 70, img: 'images/ladnoespreso.jpg' },
+            { nameKey: 'fredoespreso', price: 90, img: 'images/fredoespreso.jpg' },
+            { nameKey: 'ladnomakijato', price: 80, img: 'images/ladnomakijato.jpg' },
+            { nameKey: 'nes', price: 90, img: 'images/nes.jpg' },
+            { nameKey: 'ladnolatte', price: 90, img: 'images/late.jpg' },
+            { nameKey: 'vkuslatte', price: 110, img: 'images/latevkus.jpg' }
+          ]
+        },
+        {
+          titleKey: 'nonAlc',
+          img: 'images/soft.jpg',
+          products: [
+            { nameKey: 'cocacola', price: 80, img: 'images/cocacola.jpg' },
+            { nameKey: 'zero', price: 80, img: 'images/zero.jpg' },
+            { nameKey: 'fanta', price: 80, img: 'images/fanta.jpg' },
+            { nameKey: 'sprite', price: 80, img: 'images/sprite.jpg' },
+            { nameKey: 'kokta', price: 80, img: 'images/kokta.jpg' },
+            { nameKey: 'sveps', price: 80, img: 'images/sveps.jpg' },
+            { nameKey: 'jana', price: 100, img: 'images/jana.png' },
+            { nameKey: 'joy', price: 90, img: 'images/joy.jpg' },
+            { nameKey: 'cedevita', price: 80, img: 'images/cedevita.jpg' },
+            { nameKey: 'sodam', price: 90, img: 'images/sodam.jpg' },
+            { nameKey: 'sodal', price: 90, img: 'images/sodal.jpg' },
+            { nameKey: 'sodap', price: 90, img: 'images/sodap.png' },
+            { nameKey: 'monin', price: 100, img: 'images/monin.jpg' },
+          ]
+        },
+        {
+          titleKey: 'beer',
+          img: 'images/pivo.jpg',
+          products: [
+            { nameKey: 'skopsko', price: 90, img: 'images/skopsko.jpg' },
+            { nameKey: 'smut', price: 90, img: 'images/smut.jpg' },
+            { nameKey: 'h', price: 110, img: 'images/h.png' }
+
+          ]
+        },
+        {
+          titleKey: 'alc',
+          img: 'images/alcohol.png',
+          products: [
+            { nameKey: 'sax', price: 100, img: 'images/sax.jpg' },
+            { nameKey: 'saxp', price: 100, img: 'images/saxp.jpg' },
+            { nameKey: 'bombay', price: 120, img: 'images/bombay.jpg' },
+            { nameKey: 'beef', price: 120, img: 'images/beef.png' },
+            { nameKey: 'smirnof', price: 110, img: 'images/smirnof.jpg' },
+            { nameKey: 'aboslut', price: 110, img: 'images/absolut.jpg' },
+            { nameKey: 'pel', price: 100, img: 'images/pel.jpg' },
+            { nameKey: 'rum', price: 100, img: 'images/rum.jpg' },
+            { nameKey: 'jeger', price: 130, img: 'images/jeger.jpg' },
+            { nameKey: 'jameson', price: 160, img: 'images/jameson.jpg' },
+            { nameKey: 'jamesonblack', price: 200, img: 'images/jamesonblack.jpg' },
+            { nameKey: 'chivas', price: 200, img: 'images/chivas.jpg' },
+            { nameKey: 'gjack', price: 210, img: 'images/gjack.jpg' },
+            { nameKey: 'jw', price: 200, img: 'images/jw.jpg' },
+            { nameKey: 'tekila', price: 100, img: 'images/tekila.jpg' },
+            { nameKey: 'rakija', price: 80, img: 'images/rakija.jpg' },
+            { nameKey: 'aperol', price: 140, img: 'images/aperol.jpg' },
+          ]
+        }
       ]
-    },
-    {
-      titleKey:'coffee',
-      img:'images/kafe.jpg',
-      products:[
-        { nameKey:'espresso', price:70, img:'images/espreso.jpg' },
-        { nameKey:'doubleespresso', price:130, img:'images/duplo.jpg' },
-        { nameKey:'makijato', price:80, img:'images/makijato.jpg' },
-        { nameKey:'cappuccino', price:80, img:'images/kapucino.jpg' },
-        { nameKey:'latte', price:90, img:'images/toplolate.jpg' },
-        { nameKey:'vkuslatte', price:110, img:'images/toplolatevkus.jpg' },
-        { nameKey:'topolnes', price:90, img:'images/topolnes.png' },
-        { nameKey:'caj', price:60, img:'images/caj.jpg' },
-        { nameKey:'tp', price:90, img:'images/tp.jpg' },
-        { nameKey:'tplazma', price:110, img:'images/tplazma.png' },
-      ]
-    },
-    {
-      titleKey:'coldDrinks',
-      img:'images/ladni.jpg',
-      products:[
-        { nameKey:'ladnoespresso', price:70, img:'images/ladnoespreso.jpg' },
-        { nameKey:'fredoespreso', price:90, img:'images/fredoespreso.jpg' },
-        { nameKey:'ladnomakijato', price:80, img:'images/ladnomakijato.jpg' },
-        { nameKey:'nes', price:90, img:'images/nes.jpg' },
-        { nameKey:'ladnolatte', price:90, img:'images/late.jpg' },
-        { nameKey:'vkuslatte', price:110, img:'images/latevkus.jpg' }
-      ]
-    },
-    {
-      titleKey:'nonAlc',
-      img:'images/soft.jpg',
-      products:[
-      { nameKey:'cocacola', price:80, img:'images/cocacola.jpg' },
-      { nameKey:'zero', price:80, img:'images/zero.jpg' },
-      { nameKey:'fanta', price:80, img:'images/fanta.jpg' },
-      { nameKey:'sprite', price:80, img:'images/sprite.jpg' },
-      { nameKey:'kokta', price:80, img:'images/kokta.jpg' },
-      { nameKey:'sveps', price:80, img:'images/sveps.jpg' },
-      { nameKey:'jana', price:100, img:'images/jana.png' },
-      { nameKey:'joy', price:90, img:'images/joy.jpg' },
-      { nameKey:'cedevita', price:80, img:'images/cedevita.jpg' },
-      { nameKey:'sodam', price:90, img:'images/sodam.jpg' },
-      { nameKey:'sodal', price:90, img:'images/sodal.jpg' },
-      { nameKey:'sodap', price:90, img:'images/sodap.png' },
-      { nameKey:'monin', price:100, img:'images/monin.jpg' },
-      ]
-    },
-    {
-      titleKey:'beer',
-      img:'images/pivo.jpg',
-      products:[
-        { nameKey:'skopsko', price:90, img:'images/skopsko.jpg' },
-        { nameKey:'smut', price:90, img:'images/smut.jpg' },
-        { nameKey:'h', price:110, img:'images/h.png' }
-        
-      ]
-    },
-    {
-      titleKey:'alc',
-      img:'images/alcohol.png',
-      products:[
-        { nameKey:'sax', price:100, img:'images/sax.jpg' },
-        { nameKey:'saxp', price:100, img:'images/saxp.jpg' },
-        { nameKey:'bombay', price:120, img:'images/bombay.jpg' },
-        { nameKey:'beef', price:120, img:'images/beef.png' },
-        { nameKey:'smirnof', price:110, img:'images/smirnof.jpg' },
-        { nameKey:'aboslut', price:110, img:'images/absolut.jpg' },
-        { nameKey:'pel', price:100, img:'images/pel.jpg' },
-        { nameKey:'rum', price:100, img:'images/rum.jpg' },
-        { nameKey:'jeger', price:130, img:'images/jeger.jpg' },
-        { nameKey:'jameson', price:160, img:'images/jameson.jpg' },
-        { nameKey:'jamesonblack', price:200, img:'images/jamesonblack.jpg' },
-      ]
+    };
+
+    mainMenuCard.onclick = () => openCategory('drinks');
+
+    function toggleLanguage() {
+      currentLang = currentLang === 'mk' ? 'en' : 'mk';
+      document.getElementById('lang-toggle').textContent = currentLang.toUpperCase();
+      showMainMenu();
     }
-  ]
-};
 
-mainMenuCard.onclick = () => openCategory('drinks');
-
-function toggleLanguage(){
-  currentLang = currentLang==='mk'?'en':'mk';
-  document.getElementById('lang-toggle').textContent = currentLang.toUpperCase();
-  showMainMenu();
-}
-
-function showMainMenu(){
-  container.innerHTML = `
+    function showMainMenu() {
+      container.innerHTML = `
     <img src="images/logo.png" alt="logo" class="logo">
     <div class="category-card" id="main-menu-card">
       <img src="images/main-menu.jpg" alt="${translations[currentLang].drinks}">
       <h2 data-key="drinks">${translations[currentLang].drinks}</h2>
     </div>
   `;
-  currentView='main';
-  document.getElementById('main-menu-card').onclick = () => openCategory('drinks');
-  window.scrollTo({ top: 0, behavior: 'instant' }); // reset scroll
-}
+      currentView = 'main';
+      document.getElementById('main-menu-card').onclick = () => openCategory('drinks');
+      window.scrollTo({ top: 0, behavior: 'instant' }); // reset scroll
+    }
 
-function goBack(){
-  if(currentView==='products') openCategory('drinks');
-  else if(currentView==='categories') showMainMenu();
-  else showMainMenu();
-}
+    function goBack() {
+      if (currentView === 'products') openCategory('drinks');
+      else if (currentView === 'categories') showMainMenu();
+      else showMainMenu();
+    }
 
-function openCategory(category){
-  container.innerHTML='';
-  currentView='categories';
-  categories[category].forEach(item=>{
-    const card=document.createElement('div');
-    card.classList.add('category-card');
-    card.innerHTML=`
+    function openCategory(category) {
+      container.innerHTML = '';
+      currentView = 'categories';
+      categories[category].forEach(item => {
+        const card = document.createElement('div');
+        card.classList.add('category-card');
+        card.innerHTML = `
       <img src="${item.img}" alt="${translations[currentLang][item.titleKey]}">
       <h2>${translations[currentLang][item.titleKey]}</h2>
     `;
-    card.onclick=()=>openProducts(item);
-    container.appendChild(card);
-  });
-  window.scrollTo({ top: 0, behavior: 'instant' }); // reset scroll
-}
+        card.onclick = () => openProducts(item);
+        container.appendChild(card);
+      });
+      window.scrollTo({ top: 0, behavior: 'instant' }); // reset scroll
+    }
 
-function openProducts(item){
-  container.innerHTML='';
-  currentView='products';
-  item.products.forEach(prod=>{
-    const card=document.createElement('div');
-    card.classList.add('product-card');
-    card.innerHTML=`
+    function openProducts(item) {
+      container.innerHTML = '';
+      currentView = 'products';
+
+      // find all categories under "drinks"
+      const allCategories = categories['drinks'];
+
+      // create the scrollable top bar
+      const catBar = document.createElement('div');
+      catBar.classList.add('category-bar');
+
+      allCategories.forEach(cat => {
+        const btn = document.createElement('button');
+        btn.classList.add('category-button');
+        btn.textContent = translations[currentLang][cat.titleKey];
+        btn.onclick = () => openProducts(cat);
+        catBar.appendChild(btn);
+      });
+
+      container.appendChild(catBar);
+
+      // show all products for the selected category
+      item.products.forEach(prod => {
+        const card = document.createElement('div');
+        card.classList.add('product-card');
+        card.innerHTML = `
       <img src="${prod.img}" alt="${translations[currentLang][prod.nameKey]}">
       <div class="product-info">
         <span class="name">${translations[currentLang][prod.nameKey]}</span>
         <span class="price">${prod.price} ${translations[currentLang].currency}</span>
       </div>
     `;
-    container.appendChild(card);
-  });
-  window.scrollTo({ top: 0, behavior: 'instant' }); // reset scroll
-}
-</script>
+        container.appendChild(card);
+      });
+
+      window.scrollTo({ top: 0, behavior: 'instant' });
+    }
+
+  </script>
 
 </body>
+
 </html>
